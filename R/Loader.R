@@ -24,7 +24,7 @@ load_multiple <- function(path, pattern = "*.xlsx", add_filename = FALSE, sheet_
                       full.names = TRUE)
 
 
-  all_results <- map_dfr(files, handle_one, add_filename, sheet_name, row_offset)
+  all_results <- purrr::map_dfr(files, handle_one, add_filename, sheet_name, row_offset)
 
   return (all_results)
 
@@ -32,9 +32,11 @@ load_multiple <- function(path, pattern = "*.xlsx", add_filename = FALSE, sheet_
 
 handle_one <- function(file_name, add_filename, sheet_name, row_offset)
 {
-  res <- NULL;
+  cat(paste("Loading", file_name, "\n"))
 
-  if (stringr::str_detect(file_name, "*.csv"))
+  res <- NULL
+
+  if (stringr::str_detect(file_name, "\\.csv$"))
   {
     res <- load_from_csv(file_name, if_else(is.na(row_offset), DEFUALT_CSV_OFFSET, row_offset))
   }
