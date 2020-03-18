@@ -38,11 +38,11 @@ handle_one <- function(file_name, add_filename, sheet_name, row_offset)
 
   if (stringr::str_detect(file_name, "\\.csv$"))
   {
-    res <- load_from_csv(file_name, if_else(is.na(row_offset), DEFUALT_CSV_OFFSET, row_offset))
+    res <- load_from_csv(file_name, ifelse(is.na(row_offset), DEFUALT_CSV_OFFSET, row_offset))
   }
   else
   {
-    res <- load_from_excel(file_name, sheet_name, if_else(is.na(row_offset), DEFAULT_EXCEL_OFFSET, row_offset))
+    res <- load_from_excel(file_name, sheet_name, ifelse(is.na(row_offset), DEFAULT_EXCEL_OFFSET, row_offset))
   }
 
   stripped_file_name <- get_stripped_file_name(file_name)

@@ -11,5 +11,7 @@ LazyData: true
 Imports: readxl,
          readr,
          stringr,
-         purrr
+         purrr,
+         dplyr,
+         magrittr
 RoxygenNote: 7.1.0
