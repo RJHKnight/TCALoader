@@ -13,6 +13,7 @@ Imports: readxl,
          stringr,
          purrr,
          dplyr,
+         tidyr,
          magrittr,
          snakecase
 RoxygenNote: 7.1.0

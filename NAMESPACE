@@ -2,4 +2,5 @@
 
 export(basic_analysis)
 export(load_multiple)
+export(pairwise_analysis)
 export(standardise_post_trade)
