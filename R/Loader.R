@@ -17,7 +17,7 @@ FILE_SEP <- "/"
 #' @return data.frame containing the loaded files.
 #'
 #' @export
-load_multiple <- function(path, pattern = "*.xlsx", add_filename = FALSE, sheet_name = "Detail", row_offset = NA)
+load_multiple <- function(path, pattern = "*.xlsx", add_filename = FALSE, sheet_name = "Detail", row_offset = NA, standardise = TRUE)
 {
   files <- list.files(path = path,
                       pattern = pattern,
@@ -26,13 +26,18 @@ load_multiple <- function(path, pattern = "*.xlsx", add_filename = FALSE, sheet_
 
   all_results <- purrr::map_dfr(files, handle_one, add_filename, sheet_name, row_offset)
 
+  if (standardise)
+  {
+    all_results <- standardise_post_trade(all_results)
+  }
+
   return (all_results)
 
 }
 
 handle_one <- function(file_name, add_filename, sheet_name, row_offset)
 {
-  cat(paste("Loading", file_name, "\n"))
+  print(paste("Loading", file_name))
 
   res <- NULL
 

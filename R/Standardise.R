@@ -35,7 +35,10 @@ standardise_post_trade <- function(input)
   library(magrittr)
   library(dplyr)
 
+  # Dates
   input <- handle_date(input, DATE_COLS)
+
+  # Key columns
   input <- find_and_rename(input, SYM_COLS, SYM)
   input <- find_and_rename(input, STRATEGY_COLS, STRATEGY)
   input <- find_and_rename(input, BATCH_COLS, BATCH)
@@ -43,6 +46,9 @@ standardise_post_trade <- function(input)
   input <- find_and_rename(input, VWAP_COLS, VWAP)
   input <- find_and_rename(input, ARRIVAL_COLS, ARRIVAL)
   input <- find_and_rename(input, ORDER_ID_COLS, ORDER_ID)
+
+  # Generic column rename
+  input <- generic_rename(input)
 
   return (input)
 
@@ -69,15 +75,23 @@ handle_date <- function(input, date_cols)
    date_class <- class(input %>% pull(col_name))
 
   if (date_class == "numeric")
+  {
     input <- (mutate(input, !!DATE := handle_excel_date(!! as.name(col_name))))
+  }
+  else
+  {
+    input <- rename_col(input, DATE_COLS, DATE)
+  }
+
 
   return (select(input, -col_name))
 }
 
-
-#' @export
 rename_col <- function(input, col_name, new_name)
 {
+  if (col_name == new_name)
+    return(input)
+
   print(paste("Renaming", col_name, "to", new_name ))
   return (rename(input, !!new_name := col_name ))
 }

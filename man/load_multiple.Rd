@@ -9,7 +9,8 @@ load_multiple(
   pattern = "*.xlsx",
   add_filename = FALSE,
   sheet_name = "Detail",
-  row_offset = NA
+  row_offset = NA,
+  standardise = TRUE
 )
 }
 \arguments{
