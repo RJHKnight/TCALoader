@@ -20,9 +20,18 @@ basic_analysis <- function(input, ...)
   # Group names as string list for the join
   groups <- (sapply(group_var, quo_name))
 
+  if (length(groups) > 0)
+  {
   results <- tca_overview(input) %>%
     left_join(tca_summary(input, vwap_dev), by = groups) %>%
     left_join(tca_summary(input, arrival_dev), by = groups)
+  }
+  else
+  {
+    results <- bind_cols(tca_overview(input),
+                         tca_summary(input, vwap_dev),
+                         tca_summary(input, arrival_dev))
+  }
 
   return (results)
 }
