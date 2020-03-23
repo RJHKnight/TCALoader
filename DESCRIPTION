@@ -16,4 +16,5 @@ Imports: readxl,
          tidyr,
          magrittr,
          snakecase
+Suggests: TicR
 RoxygenNote: 7.1.0
