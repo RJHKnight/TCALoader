@@ -2,6 +2,7 @@
 
 export(add_spread)
 export(basic_analysis)
+export(equal_freq_analysis)
 export(load_multiple)
 export(pairwise_analysis)
 export(standardise_post_trade)

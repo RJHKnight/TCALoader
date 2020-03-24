@@ -3,6 +3,7 @@
 #' Simple performance analysis
 #'
 #' @param input data.frame containing the standardised post trade
+#' @param spread_normalise return benchmarks normalised by the average spread
 #'
 #' @return analysis data.frame
 #'
@@ -40,6 +41,44 @@ basic_analysis <- function(input, spread_normalise = FALSE, ...)
 
   return (results)
 }
+
+#' Equal Freq Analysis
+#'
+#' Performance analysis with equal freq bins of a continuous variable
+#'
+#' @param input data.frame containing the standardised post trade
+#' @param spread_normalise return benchmarks normalised by the average spread
+#' @param break_var variable to break on
+#' @param num_groups number of groups to split into
+#'
+#' @return analysis data.frame
+#'
+#' @export
+equal_freq_analysis <- function(input, break_var, num_groups, spread_normalise = FALSE)
+{
+  library(magrittr)
+  library(dplyr)
+  library(rlang)
+
+  group_var <- enquo(break_var)
+
+  input <- input %>%
+    mutate(group = Hmisc::cut2(!!group_var, g = num_groups)) %>%
+    group_by(group)
+
+  if (spread_normalise & !has_spread(input))
+  {
+    stop("No spread column found - add it using add_spread function.", call. = FALSE)
+  }
+
+  results <- tca_overview(input) %>%
+    left_join(tca_summary(input, vwap_dev, spread_normalise), by = "group") %>%
+    left_join(tca_summary(input, arrival_dev, spread_normalise), by = "group")
+
+  return (results)
+}
+
+
 
 has_spread <- function(input)
 {

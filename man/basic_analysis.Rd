@@ -8,6 +8,8 @@ basic_analysis(input, spread_normalise = FALSE, ...)
 }
 \arguments{
 \item{input}{data.frame containing the standardised post trade}
+
+\item{spread_normalise}{return benchmarks normalised by the average spread}
 }
 \value{
 analysis data.frame
