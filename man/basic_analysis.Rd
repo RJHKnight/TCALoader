@@ -4,7 +4,7 @@
 \alias{basic_analysis}
 \title{Basic Analysis}
 \usage{
-basic_analysis(input, ...)
+basic_analysis(input, spread_normalise = FALSE, ...)
 }
 \arguments{
 \item{input}{data.frame containing the standardised post trade}

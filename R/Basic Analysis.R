@@ -7,7 +7,7 @@
 #' @return analysis data.frame
 #'
 #' @export
-basic_analysis <- function(input, ...)
+basic_analysis <- function(input, spread_normalise = FALSE, ...)
 {
   library(magrittr)
   library(dplyr)
@@ -20,20 +20,30 @@ basic_analysis <- function(input, ...)
   # Group names as string list for the join
   groups <- (sapply(group_var, quo_name))
 
+  if (spread_normalise & !has_spread(input))
+  {
+    stop("No spread column found - add it using add_spread function.", call. = FALSE)
+  }
+
   if (length(groups) > 0)
   {
   results <- tca_overview(input) %>%
-    left_join(tca_summary(input, vwap_dev), by = groups) %>%
-    left_join(tca_summary(input, arrival_dev), by = groups)
+    left_join(tca_summary(input, vwap_dev, spread_normalise), by = groups) %>%
+    left_join(tca_summary(input, arrival_dev, spread_normalise), by = groups)
   }
   else
   {
     results <- bind_cols(tca_overview(input),
-                         tca_summary(input, vwap_dev),
-                         tca_summary(input, arrival_dev))
+                         tca_summary(input, vwap_dev, spread_normalise),
+                         tca_summary(input, arrival_dev, spread_normalise))
   }
 
   return (results)
+}
+
+has_spread <- function(input)
+{
+  return (any(colnames(input) == "spread"))
 }
 
 tca_overview <- function(input)
@@ -47,19 +57,20 @@ tca_overview <- function(input)
   )
 }
 
-tca_summary <- function(input, benchmark)
+tca_summary <- function(input, benchmark, spread_normalise)
 {
   expr <- enquo(benchmark)
   mean_name <- paste0("m_", quo_name(expr))
   weighted_mean_name <- paste0("wm_", quo_name(expr))
   median_name <- paste0("med_", quo_name(expr))
+  denom <- ifelse(spread_normalise, as.name("spread"), 1)
 
   return (
     summarise(
       input,
-      !! mean_name          := mean(!!expr),
-      !! weighted_mean_name := weighted.mean(!!expr, us_value),
-      !! median_name        := median(!!expr)
+      !! mean_name          := mean(!!expr / !!denom),
+      !! weighted_mean_name := weighted.mean(!!expr/ !!denom, us_value),
+      !! median_name        := median(!!expr / !!denom)
     )
   )
 }
