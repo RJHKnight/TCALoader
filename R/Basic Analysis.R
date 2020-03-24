@@ -8,7 +8,7 @@
 #' @return analysis data.frame
 #'
 #' @export
-basic_analysis <- function(input, spread_normalise = FALSE, ...)
+basic_analysis <- function(input, ..., spread_normalise = FALSE)
 {
   library(magrittr)
   library(dplyr)
