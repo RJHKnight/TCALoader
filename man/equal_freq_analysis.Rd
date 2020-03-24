@@ -4,7 +4,13 @@
 \alias{equal_freq_analysis}
 \title{Equal Freq Analysis}
 \usage{
-equal_freq_analysis(input, break_var, num_groups, spread_normalise = FALSE)
+equal_freq_analysis(
+  input,
+  break_var,
+  num_groups,
+  ...,
+  spread_normalise = FALSE
+)
 }
 \arguments{
 \item{input}{data.frame containing the standardised post trade}

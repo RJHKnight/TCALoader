@@ -54,26 +54,33 @@ basic_analysis <- function(input, ..., spread_normalise = FALSE)
 #' @return analysis data.frame
 #'
 #' @export
-equal_freq_analysis <- function(input, break_var, num_groups, spread_normalise = FALSE)
+equal_freq_analysis <- function(input, break_var, num_groups, ..., spread_normalise = FALSE)
 {
   library(magrittr)
   library(dplyr)
   library(rlang)
 
-  group_var <- enquo(break_var)
+  break_var <- enquo(break_var)
 
   input <- input %>%
-    mutate(group = Hmisc::cut2(!!group_var, g = num_groups)) %>%
-    group_by(group)
+    mutate(group = Hmisc::cut2(!!break_var, g = num_groups))
+
+  group_var <- enquos(...)
+  group_var <- c(group_var, quo(group))
+
+  input <- input %>% group_by(!!! group_var)
 
   if (spread_normalise & !has_spread(input))
   {
     stop("No spread column found - add it using add_spread function.", call. = FALSE)
   }
 
+  # Group names as string list for the join
+  groups <- (sapply(group_var, quo_name))
+
   results <- tca_overview(input) %>%
-    left_join(tca_summary(input, vwap_dev, spread_normalise), by = "group") %>%
-    left_join(tca_summary(input, arrival_dev, spread_normalise), by = "group")
+    left_join(tca_summary(input, vwap_dev, spread_normalise), by = groups) %>%
+    left_join(tca_summary(input, arrival_dev, spread_normalise), by = groups)
 
   return (results)
 }
