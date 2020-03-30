@@ -77,6 +77,7 @@ handle_date <- function(input, date_cols)
   if (date_class == "numeric")
   {
     input <- (mutate(input, !!DATE := handle_excel_date(!! as.name(col_name))))
+    input <- select(input, -col_name)
   }
   else
   {
@@ -84,7 +85,7 @@ handle_date <- function(input, date_cols)
   }
 
 
-  return (select(input, -col_name))
+  return (input)
 }
 
 rename_col <- function(input, col_name, new_name)
