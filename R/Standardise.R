@@ -1,14 +1,14 @@
 
 
 # Names in post trade
-VWAP_COLS <- c("Vwap Deviation (bps)")
-ARRIVAL_COLS <- c("Arrival Deviation (bps)")
+VWAP_COLS <- c("Vwap Deviation (bps)", "InLimitVwapDev")
+ARRIVAL_COLS <- c("Arrival Deviation (bps)", "ArrivalDev")
 DATE_COLS <- c("Date")
-STRATEGY_COLS <- c("Algo Strategy")
+STRATEGY_COLS <- c("Algo Strategy", "Algorithm", "Strategy")
 BATCH_COLS <- c("Batch")
-SYM_COLS <- c("symbol", "sym", "Instrument")
+SYM_COLS <- c("symbol", "sym", "Instrument", "ExchangeID")
 SIDE_COLS <- c("Side")
-ORDER_ID_COLS <- c("Order ID")
+ORDER_ID_COLS <- c("Order ID", "OrderID")
 
 # Standardised names
 DATE     <- "date"
