@@ -39,10 +39,14 @@ load_vol_profile_one_date <- function(syms, date)
     rename(pct_vol = Avg20dPctVolume) %>%
     mutate(pct_vol = pct_vol / 100)
 
-  volumes <- getDailyData(symList = syms,
-                          startDate = date_string,
-                          endDate = date_string,
-                          columns =  c("openauctvolume", "closeauctvolume", "volume"))
+  volumes <- getBatchData(symList = syms,
+                              endDate = date_string,
+                              columns = "daily")
+
+  volumes <- select(volumes, date, sym, Avg20dVolume, Avg20dOpenVolume, Avg20dCloseVolume ) %>%
+    rename(volume = Avg20dVolume,
+           openauctvolume = Avg20dOpenVolume,
+           closeauctvolume = Avg20dCloseVolume)
 
   volumes <- volumes %>%
     mutate(
