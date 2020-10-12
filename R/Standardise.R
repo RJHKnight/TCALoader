@@ -72,6 +72,9 @@ handle_date <- function(input, date_cols)
    all_cols <- colnames(input)
    col_name <- get_col_name(DATE_COLS, all_cols)
 
+   if (is.na(col_name))
+     return(input)
+
    date_class <- class(input %>% pull(col_name))
 
   if (date_class == "numeric")
