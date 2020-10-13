@@ -69,7 +69,7 @@ load_vol_profile_one_date <- function(syms, date)
   open_row <- start_times %>%
     left_join(volumes, by = c("sym", "date")) %>%
     mutate(endTime = startTime,
-           startTime = startTime - minutes(15),
+           startTime = startTime - minutes(5),
            pct_vol = pct_open) %>%
     select(-pct_close, -pct_cont, -pct_open)
 
@@ -82,14 +82,15 @@ load_vol_profile_one_date <- function(syms, date)
     left_join(volumes, by = c("sym", "date")) %>%
     mutate(
       startTime = endTime,
-      endTime = endTime + minutes(15),
+      endTime = endTime + minutes(5),
       pct_vol = pct_close) %>%
     select(-pct_close, -pct_cont, -pct_open)
 
   all_profiles <- rbind(as.data.frame(open_row),
                         vol_profile,
                         as.data.frame(close_row)) %>%
-    arrange(date, sym, startTime)
+    arrange(date, sym, startTime) %>%
+    rename(hist_pct_vol = pct_vol)
 
   return (all_profiles)
 

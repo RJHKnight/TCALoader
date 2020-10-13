@@ -1,7 +1,7 @@
 Package: TCALoader
 Type: Package
 Title: Read and Standard Post Trade Reports
-Version: 0.3.0
+Version: 0.4.0
 Author: Richard Knight
 Maintainer: Richard Knight <rjhknight@gmail.com>
 Description: Load and standardise post trade reports in Excel and CSV format
